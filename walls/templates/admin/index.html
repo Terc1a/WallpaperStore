@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/custom_admin.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="custom-admin-wrapper">
+    <h1 class="custom-admin-title">Администрирование сайта</h1>
+    <div class="custom-admin-models">
+        {% for app in app_list %}
+            <div class="custom-admin-app">
+                <h2>{{ app.name }}</h2>
+                <ul>
+                {% for model in app.models %}
+                    <li>
+                        <a href="{{ model.admin_url }}" class="custom-admin-link">{{ model.name }}</a>
+                        <span class="custom-admin-actions">
+                            <a href="{{ model.add_url }}" class="custom-admin-btn">Добавить</a>
+                            <a href="{{ model.admin_url }}" class="custom-admin-btn">Изменить</a>
+                        </span>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+ 

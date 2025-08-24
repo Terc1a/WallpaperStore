@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/custom_admin.css' %}">
+{% endblock %}
+{% block content %}
+<div class="custom-admin-wrapper">
+    <h1 class="custom-admin-title">{{ title }}</h1>
+    {{ block.super }}
+</div>
+{% endblock %}

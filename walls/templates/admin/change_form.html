@@ -1,0 +1,67 @@
+{% extends "admin/base.html" %}
+{% load static %}
+{% block extrastyle %}
+<link rel="stylesheet" type="text/css" href="{% static 'admin/custom_admin.css' %}">
+<script src="{% static 'admin/tags_widget.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div class="custom-admin-wrapper">
+    <h1 class="custom-admin-title">{{ title }}</h1>
+    <form method="post" enctype="multipart/form-data" class="modern-form" novalidate>{% csrf_token %}
+        {{ adminform.form.non_field_errors }}
+        {% for fieldset in adminform %}
+            <fieldset class="modern-fieldset">
+                {% if fieldset.name %}<legend>{{ fieldset.name }}</legend>{% endif %}
+                {% for field in fieldset.form %}
+                    {% if field.name == 'pub_date' %}
+                        <div class="date-time-row">
+                            <div class="date-input">
+                                <label for="{{ field.id_for_label }}" class="modern-label">Дата:</label>
+                                {{ field }}
+                                <span class="date-icon">📅</span>
+                            </div>
+                            {% if fieldset.form.time %}
+                            <div class="time-input">
+                                <label for="{{ fieldset.form.time.id_for_label }}" class="modern-label">Время:</label>
+                                {{ fieldset.form.time }}
+                                <span class="time-icon">⏰</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div class="modern-form-field">
+                            <label for="{{ field.id_for_label }}" class="modern-label">{{ field.label }}</label>
+                            {% if field.name == 'image' and original and original.image %}
+                                <div class="modern-image-preview">
+                                    <img src="{{ original.image.url }}" alt="preview" />
+                                </div>
+                            {% endif %}
+                            {% if field.name == 'tags' %}
+                                <div style="display:flex;align-items:center;gap:12px;">
+                                    <div id="tags-chip-list" class="chip-list"></div>
+                                    <button type="button" id="show-select-btn" class="add-tag-btn">+</button>
+                                </div>
+                                <div id="tags-select-block" style="display:none;margin-top:10px;flex-direction:column;gap:8px;">
+                                    {{ field }}
+                                    <div id="add-tag-form" class="add-tag-form" style="display:none;margin-top:10px;">
+                                        <input type="text" id="new-tag-title" placeholder="Название тега" />
+                                        <input type="text" id="new-tag-descr" placeholder="Описание" />
+                                        <button type="button" id="save-tag-btn" class="custom-admin-btn">Добавить</button>
+                                        <button type="button" id="cancel-tag-btn" class="custom-admin-btn" style="background:#888;">Отмена</button>
+                                    </div>
+                                    <button type="button" id="hide-select-btn" class="custom-admin-btn" style="margin-top:8px;background:#888;">Закрыть</button>
+                                </div>
+                            {% else %}
+                                {{ field }}
+                            {% endif %}
+                            {% if field.help_text %}<small class="modern-help">{{ field.help_text }}</small>{% endif %}
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </fieldset>
+        {% endfor %}
+        <input type="submit" value="Сохранить" class="custom-admin-btn" />
+    </form>
+</div>
+{% endblock %}
