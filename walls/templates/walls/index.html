@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wall Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+    <div class="flex">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg p-6 min-h-screen">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">Теги</h2>
+            <ul class="space-y-3">
+                {% for tag in tags_list %}
+                <li>
+                    <a href="/sort/{{ tag.id }}/" class="block px-4 py-2 rounded hover:bg-blue-100 text-gray-700">{{tag.title }}</a>
+                </li>
+                {% empty %}
+                <li class="text-gray-400">Нет тегов</li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-8">
+            <h1 class="text-3xl font-bold mb-8 text-gray-900">Галерея обоев</h1>
+            <div class="grid gap-6" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                {% for wall in walls_list %}
+                <a href="/{{ wall.id }}/" class="block">
+                    <div class="bg-white rounded-lg shadow hover:shadow-xl overflow-hidden flex flex-col items-center max-w-xs mx-auto cursor-pointer transition-transform hover:scale-105">
+                        <img src="{{ wall.image.url }}" alt="Wallpaper" class="w-full h-48 object-cover">
+                        <div class="p-4 w-full">
+                            <div class="flex flex-wrap gap-2 mb-2">
+                                {% for tag in wall.tags.all %}
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{{ tag.title }}</span>
+                                {% empty %}
+                                <span class="bg-gray-200 text-gray-500 text-xs px-2 py-1 rounded">Нет тегов</span>
+                                {% endfor %}
+                            </div>
+                            <div class="mt-2 text-gray-700 font-semibold">{{ wall.title }}</div>
+                        </div>
+                    </div>
+                </a>
+                {% empty %}
+                <div class="col-span-full text-center text-gray-500">Нет изображений</div>
+                {% endfor %}
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

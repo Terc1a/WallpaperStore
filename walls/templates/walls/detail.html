@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ wall.title }} | Wall Store</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+	<div class="bg-white rounded-lg shadow-lg p-8 max-w-xl w-full mx-auto flex flex-col items-center">
+		<h1 class="text-2xl font-bold mb-4 text-gray-900 text-center">{{ wall.title }}</h1>
+		<img src="{{ wall.image.url }}" alt="Wallpaper" class="rounded-lg mb-6 w-full max-w-lg object-contain" style="max-height: 400px;">
+		<div class="flex flex-wrap gap-2 mb-6 justify-center">
+			{% for tag in wall.tags.all %}
+				<span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">{{ tag.title }}</span>
+			{% empty %}
+				<span class="bg-gray-200 text-gray-500 text-xs px-2 py-1 rounded">Нет тегов</span>
+			{% endfor %}
+		</div>
+		<a href="/download/{{ wall.id }}/" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-center block">Скачать</a>
+	</div>
+</body>
+</html>
